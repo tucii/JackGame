@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     var timer = Timer()
     var counter = 0
     var jackArray = [UIImageView]()
-    //var hideTimer = Timer()
+    var hideTimer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +68,7 @@ class ViewController: UIViewController {
         timeLabel.text = "\(counter)"
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.countDown), userInfo: nil, repeats: true)
         
-      //  hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideJack), userInfo: nil, repeats: true)
+        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideJack), userInfo: nil, repeats: true)
         
         jackArray.append(jack1)
         jackArray.append(jack2)
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
         jackArray.append(jack8)
         jackArray.append(jack9)
         
-       // hideJack()
+        hideJack()
         
         
         
@@ -88,14 +88,14 @@ class ViewController: UIViewController {
         
         
     }
-   /* func hideJack() {
+    @objc func hideJack() {
         for jack in jackArray {
             jack.isHidden = true
         }
         let random = Int(arc4random_uniform(UInt32(jackArray.count-1)))
         
         jackArray[random].isHidden = false
-    } */
+    }
     
     
     @objc func countDown(){
@@ -105,6 +105,7 @@ class ViewController: UIViewController {
         
         if counter == 0 {
             timer.invalidate()
+            hideTimer.invalidate()
             
             let alertTime = UIAlertController(title: "Time", message: "Time is Up!", preferredStyle: UIAlertControllerStyle.alert)
             
