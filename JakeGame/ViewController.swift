@@ -64,11 +64,11 @@ class ViewController: UIViewController {
         jack8.addGestureRecognizer(recognizer8)
         jack9.addGestureRecognizer(recognizer9)
         
-        counter = 5
+        counter = 30
         timeLabel.text = "\(counter)"
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.countDown), userInfo: nil, repeats: true)
         
-        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideJack), userInfo: nil, repeats: true)
+        hideTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(ViewController.hideJack), userInfo: nil, repeats: true)
         
         jackArray.append(jack1)
         jackArray.append(jack2)
@@ -110,13 +110,24 @@ class ViewController: UIViewController {
             let alertTime = UIAlertController(title: "Time", message: "Time is Up!", preferredStyle: UIAlertControllerStyle.alert)
             
             let okButton = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+            
+            let replayButton = UIAlertAction(title: "Replay", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+                self.score = 0
+                self.scoreLabel.text = "Score: \(self.score)"
+                self.counter = 30
+                self.timeLabel.text =  "\(self.counter)"
+                
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.countDown), userInfo: nil, repeats: true)
+                
+                self.hideTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(ViewController.hideJack), userInfo: nil, repeats: true)
+                
+            } )
+        
+        
+            alertTime.addAction(replayButton)
             alertTime.addAction(okButton)
             self.present(alertTime, animated: true, completion: nil)
         }
-        
-        
-        
-        
     }
     
     @objc func scoreIncrease () {
