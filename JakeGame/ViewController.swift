@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     var counter = 0
     var jackArray = [UIImageView]()
     var hideTimer = Timer()
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,7 +129,13 @@ class ViewController: UIViewController {
             
             let alertTime = UIAlertController(title: "Time", message: "Time is Up!", preferredStyle: UIAlertControllerStyle.alert)
             
-            let okButton = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+            let okButton = UIAlertAction(title: "OK and Quit", style: UIAlertActionStyle.default, handler: {
+                (UIAlertAction) in
+                exit(0)
+              
+                
+                
+            } )
             
             let replayButton = UIAlertAction(title: "Replay", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                 self.score = 0
@@ -155,8 +162,10 @@ class ViewController: UIViewController {
         
         
     }
+  
+    }
 
     
 
-}
+
 
