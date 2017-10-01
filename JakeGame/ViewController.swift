@@ -32,6 +32,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let highScore = UserDefaults.standard.object(forKey: "highscore")
+        
+        if highScore == nil {
+            highscoreLabel.text = "0"
+            
+        }
+        if let newScore = highScore as? Int {
+            highscoreLabel.text = String(newScore)
+        }
+        
         scoreLabel.text = "Score: \(score)"
         
         let recognizer1 = UITapGestureRecognizer(target: self, action: #selector(ViewController.scoreIncrease))
@@ -64,11 +74,16 @@ class ViewController: UIViewController {
         jack8.addGestureRecognizer(recognizer8)
         jack9.addGestureRecognizer(recognizer9)
         
-        counter = 30
+        
+        //timers 
+        
+        counter = 20
         timeLabel.text = "\(counter)"
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.countDown), userInfo: nil, repeats: true)
         
         hideTimer = Timer.scheduledTimer(timeInterval: 0.7, target: self, selector: #selector(ViewController.hideJack), userInfo: nil, repeats: true)
+        
+        //arrays
         
         jackArray.append(jack1)
         jackArray.append(jack2)
@@ -84,14 +99,13 @@ class ViewController: UIViewController {
         
         
         
-        
-        
-        
     }
+    
     @objc func hideJack() {
         for jack in jackArray {
             jack.isHidden = true
         }
+        
         let random = Int(arc4random_uniform(UInt32(jackArray.count-1)))
         
         jackArray[random].isHidden = false
@@ -100,12 +114,17 @@ class ViewController: UIViewController {
     
     @objc func countDown(){
         
-        counter = counter-1
+        counter = counter - 1
         timeLabel.text = "\(counter)"
         
         if counter == 0 {
             timer.invalidate()
             hideTimer.invalidate()
+            
+            if self.score > Int(highscoreLabel.text!)!{
+                UserDefaults.standard.set(self.score, forKey: "highscore")
+                highscoreLabel.text = String(self.score)
+            }
             
             let alertTime = UIAlertController(title: "Time", message: "Time is Up!", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -114,7 +133,7 @@ class ViewController: UIViewController {
             let replayButton = UIAlertAction(title: "Replay", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                 self.score = 0
                 self.scoreLabel.text = "Score: \(self.score)"
-                self.counter = 30
+                self.counter = 20
                 self.timeLabel.text =  "\(self.counter)"
                 
                 self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.countDown), userInfo: nil, repeats: true)
@@ -131,8 +150,10 @@ class ViewController: UIViewController {
     }
     
     @objc func scoreIncrease () {
-        scoreLabel.text = "Score: \(score)"
         score = score+1
+        scoreLabel.text = "Score: \(score)"
+        
+        
     }
 
     
